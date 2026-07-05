@@ -1,16 +1,51 @@
-## Hi there 👋
+<div align="left">
+  <img src="https://media1.tenor.com/m/aBHSs1kYS7IAAAAC/white-cat-anime.gif" width="50%" alt="white banner">
+</div>
 
-<!--
-**liwidale/liwidale** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+<br>
 
-Here are some ideas to get you started:
+<b>find liwidale</b>
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+<br>
+
+. software engineer & product designer<br>
+. building fast systems with beautiful interfaces<br>
+. obsessed with performance, architecture & details<br>
+. turning complex ideas into simple experiences
+
+<br>
+
+<b>communications:</b>
+
+<br>
+
+. reach me on <a href="https://t.me/liwidale" target="_blank">telegram</a><br>
+. talk on <a href="https://x.com/liwidale" target="_blank">x</a><br>
+. discord: <code>@liwdale</code>
+
+<br>
+
+<b>the stack:</b>
+
+<br>
+
+. <code>rust</code><br>
+. <code>python</code> · <code>typescript</code> · <code>javascript</code><br>
+. <code>node.js</code><br>
+. <code>react</code> · <code>next.js</code> · <code>svelte</code> · <code>astro</code><br>
+. <code>tauri</code><br>
+. <code>postgres</code> · <code>redis</code> · <code>sqlite</code><br>
+. <code>tailwindcss</code> · <code>shadcn/ui</code> · <code>motion</code><br>
+. <code>figma</code> · <code>photoshop</code> · <code>after effects</code><br>
+
+<br>
+
+<b>what i care about:</b>
+
+<br>
+
+. elegant architecture<br>
+. zero-cost abstractions<br>
+. pixel-perfect interfaces<br>
+. delightful developer experience<br>
+. products people actually enjoy using
