@@ -1,5 +1,5 @@
 <div align="left">
-  <img src="https://media1.tenor.com/m/aBHSs1kYS7IAAAAC/white-cat-anime.gif" width="50%" alt="white banner">
+  <img src="https://media1.tenor.com/m/9IgfhOZxR5sAAAAd/gachiakuta-amo-empool.gif" width="50%" alt="white banner">
 </div>
 
 <br>
