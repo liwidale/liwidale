@@ -29,7 +29,7 @@
 
 <br>
 
-. <code>rust</code><br>
+. <code>rust</code> · <code>dart</code> · <code>flutter</code><br>
 . <code>python</code> · <code>typescript</code> · <code>javascript</code><br>
 . <code>node.js</code><br>
 . <code>react</code> · <code>next.js</code> · <code>svelte</code> · <code>astro</code><br>
