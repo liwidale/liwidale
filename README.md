@@ -1,5 +1,6 @@
 <div align="left">
-  <img src="https://github.com/user-attachments/assets/f568680b-a00b-411c-939e-8910d81d0845" width="50%" alt="white banner">
+  <img width="50%" alt="liwibanner" src="https://github.com/user-attachments/assets/62b6ae91-c6bd-4e72-9d6e-2626443f84ee" />
+
 </div>
 
 <br>
