@@ -22,6 +22,7 @@
 
 . reach me on <a href="https://t.me/liwidale" target="_blank">telegram</a><br>
 . talk on <a href="https://x.com/liwidale" target="_blank">x</a><br>
+. chat on <a href="https://matrix.to/#/@liwidale:matrix.org" target="_blank">matrix</a><br>
 . discord: <code>@liwdale</code>
 
 <br>
@@ -30,12 +31,15 @@
 
 <br>
 
-. <code>rust</code> · <code>dart</code> · <code>flutter</code><br>
+. <code>rust</code> · <code>golang</code> · <code>kotlin</code> · <code>swift</code> · <code>dart</code><br>
 . <code>python</code> · <code>typescript</code> · <code>javascript</code><br>
+
+. <code>flutter</code> · <code>tauri</code><br>
+. <code>react</code> · <code>next.js</code>
+
 . <code>node.js</code><br>
-. <code>react</code> · <code>next.js</code> · <code>svelte</code> · <code>astro</code><br>
-. <code>tauri</code><br>
 . <code>postgres</code> · <code>redis</code> · <code>sqlite</code><br>
+
 . <code>tailwindcss</code> · <code>shadcn/ui</code> · <code>motion</code><br>
 . <code>figma</code> · <code>photoshop</code> · <code>after effects</code><br>
 
