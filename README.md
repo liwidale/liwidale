@@ -1,8 +1,5 @@
 <div align="left">
-  <img width="50%" alt="me" src="https://github.com/user-attachments/assets/eab74cb9-5260-4f40-88a9-415eadd8cb78" />
-
-
-
+  <img width="50%" alt="me" src="https://github.com/user-attachments/assets/43e43628-5b9b-46b0-9f45-4ff0c64009c9" />
 </div>
 
 <br>
