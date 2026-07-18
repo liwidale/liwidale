@@ -22,7 +22,7 @@
 . reach me on <a href="https://t.me/liwidale" target="_blank">telegram</a><br>
 . talk on <a href="https://x.com/liwidale" target="_blank">x</a><br>
 . chat on <a href="https://matrix.to/#/@liwidale:matrix.org" target="_blank">matrix</a><br>
-. discord: <code>@liwdale</code>
+. discord: <code>@liwidale</code>
 
 <br>
 
