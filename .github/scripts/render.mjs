@@ -1,11 +1,12 @@
-// Renders the profile visuals (terminal, project cards, stats, languages) as SVG.
+// Renders the profile visuals (banner, terminal, project cards, stats, languages) as SVG.
 // Usage: GITHUB_TOKEN=... node .github/scripts/render.mjs <out-dir>
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const LOGIN = "liwidale";
 const PROJECTS = ["kumo", "liauth", "claude-portable", "lolzteam-api-ts"];
 const OUT = process.argv[2] ?? "dist";
+const BANNER = new URL("../assets/banner.gif", import.meta.url);
 
 const C = { bg: "#0A0A0A", border: "#262626", text: "#EDEDED", muted: "#A1A1A1", dim: "#525252", accent: "#4C9DFF" };
 const SANS = "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
@@ -74,8 +75,27 @@ async function query() {
   return json.data.user;
 }
 
+// Both windows share one size, so they line up side by side in the README.
+const WIN = { W: 480, H: 304, BAR: 34 };
+
+const chrome = (title, content) => `<rect x="0.5" y="0.5" width="${WIN.W - 1}" height="${WIN.H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
+<circle cx="18" cy="17" r="5" fill="${C.border}"/><circle cx="36" cy="17" r="5" fill="${C.border}"/><circle cx="54" cy="17" r="5" fill="${C.border}"/>
+<text x="${WIN.W / 2}" y="21" text-anchor="middle" class="mono" font-size="11" fill="${C.dim}">${esc(title)}</text>
+<clipPath id="screen"><rect x="1" y="${WIN.BAR + 1}" width="${WIN.W - 2}" height="${WIN.H - WIN.BAR - 2}" rx="7"/></clipPath>
+<g clip-path="url(#screen)">
+${content}</g>
+<line x1="1" y1="${WIN.BAR + 0.5}" x2="${WIN.W - 1}" y2="${WIN.BAR + 0.5}" stroke="${C.border}"/>`;
+
+function banner() {
+  const gif = readFileSync(BANNER).toString("base64");
+  const { W, H, BAR } = WIN;
+  return svg(W, H, chrome("liwidale — banner.gif",
+    `<image x="1" y="${BAR + 1}" width="${W - 2}" height="${H - BAR - 2}" preserveAspectRatio="xMidYMid slice" href="data:image/gif;base64,${gif}"/>
+`));
+}
+
 function terminal() {
-  const W = 480, H = 270, X = 18, LH = 25, FS = 13, CW = FS * 0.6;
+  const { W, H } = WIN, X = 18, LH = 27, FS = 13, CW = FS * 0.6;
   const PROMPT = "liwidale@Liwidale %";
   const script = [
     ["cmd", "whoami"], ["out", "liwidale · computer-science student"],
@@ -83,7 +103,7 @@ function terminal() {
     ["cmd", "cat focus.txt"], ["out", "fast systems with beautiful interfaces"], ["out", "complex ideas, simple experiences"],
     ["end", ""],
   ];
-  let t = 0.4, y = 62, body = "", keyframes = "";
+  let t = 0.4, y = 66, body = "", keyframes = "";
   script.forEach(([kind, text], i) => {
     const cmdX = X + (PROMPT.length + 1) * CW;
     const fixed = (s) => `textLength="${(s.length * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs"`;
@@ -106,15 +126,9 @@ function terminal() {
 </g>\n`;
       t += 0.35 + dur + 0.3;
     }
-    y += kind === "out" && script[i + 1]?.[0] === "cmd" ? LH + 4 : LH;
+    y += kind === "out" && script[i + 1]?.[0] !== "out" ? LH + 4 : LH;
   });
-  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
-<line x1="0" y1="34.5" x2="${W}" y2="34.5" stroke="${C.border}"/>
-<circle cx="18" cy="17" r="5" fill="${C.border}"/><circle cx="36" cy="17" r="5" fill="${C.border}"/><circle cx="54" cy="17" r="5" fill="${C.border}"/>
-<text x="${W / 2}" y="21" text-anchor="middle" class="mono" font-size="11" fill="${C.dim}">liwidale — zsh — 80×24</text>
-<clipPath id="screen"><rect x="1" y="35" width="${W - 2}" height="${H - 36}" rx="7"/></clipPath>
-<g clip-path="url(#screen)">
-${body}</g>`, `
+  return svg(W, H, chrome("liwidale — zsh — 80×24", body), `
   .ln { opacity: 0; animation: show 0.01s forwards; }
   @keyframes show { to { opacity: 1; } }
   .gone { animation: hide 0.01s forwards; }
@@ -210,7 +224,7 @@ ${legend}
 
 const user = await query();
 mkdirSync(join(OUT, "projects"), { recursive: true });
-const files = { "terminal.svg": terminal(), "stats.svg": stats(user), "languages.svg": languages(user) };
+const files = { "banner.svg": banner(), "terminal.svg": terminal(), "stats.svg": stats(user), "languages.svg": languages(user) };
 for (const name of PROJECTS) {
   const repo = user.repositories.nodes.find((r) => r.name === name);
   if (repo) files[`projects/${name}.svg`] = project(repo);

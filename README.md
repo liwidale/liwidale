@@ -1,5 +1,5 @@
 <p align="left">
-  <img width="49%" alt="ゝ" src=".github/assets/banner.gif" />
+  <img width="49%" alt="ゝ" src="https://raw.githubusercontent.com/liwidale/liwidale/output/banner.svg" />
   <img width="49%" alt="liwidale@Liwidale % whoami: liwidale, computer-science student. programmer, web designer and tech enthusiast. fast systems with beautiful interfaces, complex ideas turned into simple experiences." src="https://raw.githubusercontent.com/liwidale/liwidale/output/terminal.svg" />
 </p>
 
