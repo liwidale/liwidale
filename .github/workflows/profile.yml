@@ -6,10 +6,12 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [".github/scripts/**", ".github/workflows/profile.yml"]
+    paths: [".github/scripts/**", ".github/assets/**", ".github/workflows/profile.yml"]
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: profile
@@ -18,6 +20,9 @@ concurrency:
 jobs:
   render:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
 
@@ -30,22 +35,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Render contribution snake
-        uses: Platane/snk/svg-only@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
-          github_user_name: ${{ github.repository_owner }}
-          outputs: |
-            dist/snake-dark.svg?color_snake=#EDEDED&color_dots=#161616,#0E2A4D,#1A4A85,#2F72C4,#4C9DFF
-            dist/snake-light.svg?color_snake=#0A0A0A&color_dots=#EBEDF0,#CFE3FF,#9CC6FF,#6AA9FF,#4C9DFF
+          path: dist
 
-      - name: Publish to the output branch
-        working-directory: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git init -q -b output
-          git config user.name "Liwidale"
-          git config user.email "299171130+liwidale@users.noreply.github.com"
-          git add -A
-          git commit -q -m "{ゝ} Updated assets"
-          git push -q -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" output
+      - id: deploy
+        uses: actions/deploy-pages@v5

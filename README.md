@@ -1,6 +1,6 @@
 <p align="left">
-  <img width="49%" alt="ゝ" src="https://raw.githubusercontent.com/liwidale/liwidale/output/banner.svg" />
-  <img width="49%" alt="liwidale@Liwidale % whoami: liwidale, computer-science student. programmer, web designer and tech enthusiast. fast systems with beautiful interfaces, complex ideas turned into simple experiences." src="https://raw.githubusercontent.com/liwidale/liwidale/output/terminal.svg" />
+  <img width="49%" alt="ゝ" src="https://liwidale.github.io/liwidale/banner.svg" />
+  <img width="49%" alt="liwidale@Liwidale % whoami: liwidale, computer-science student. programmer, web designer and tech enthusiast. fast systems with beautiful interfaces, complex ideas turned into simple experiences." src="https://liwidale.github.io/liwidale/terminal.svg" />
 </p>
 
 <br>
@@ -10,10 +10,10 @@
 <br>
 
 <p align="left">
-  <a href="https://github.com/liwidale/kumo"><img width="49%" alt="kumo: a desktop companion that lives at the top of your screen and keeps an eye on your coding agents" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/kumo.svg" /></a>
-  <a href="https://github.com/liwidale/liauth"><img width="49%" alt="liauth: offline-first, end-to-end encrypted authenticator for android, ios, macos and windows" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/liauth.svg" /></a>
-  <a href="https://github.com/liwidale/claude-portable"><img width="49%" alt="claude-portable: claude code on a usb drive, one memory on every computer" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/claude-portable.svg" /></a>
-  <a href="https://github.com/liwidale/lolzteam-api-ts"><img width="49%" alt="lolzteam-api-ts: typescript and javascript sdk for the lolzteam forum and market apis" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/lolzteam-api-ts.svg" /></a>
+  <a href="https://github.com/liwidale/kumo"><img width="49%" alt="kumo: a desktop companion that lives at the top of your screen and keeps an eye on your coding agents" src="https://liwidale.github.io/liwidale/projects/kumo.svg" /></a>
+  <a href="https://github.com/liwidale/liauth"><img width="49%" alt="liauth: offline-first, end-to-end encrypted authenticator for android, ios, macos and windows" src="https://liwidale.github.io/liwidale/projects/liauth.svg" /></a>
+  <a href="https://github.com/liwidale/claude-portable"><img width="49%" alt="claude-portable: claude code on a usb drive, one memory on every computer" src="https://liwidale.github.io/liwidale/projects/claude-portable.svg" /></a>
+  <a href="https://github.com/liwidale/lolzteam-api-ts"><img width="49%" alt="lolzteam-api-ts: typescript and javascript sdk for the lolzteam forum and market apis" src="https://liwidale.github.io/liwidale/projects/lolzteam-api-ts.svg" /></a>
 </p>
 
 <br>
@@ -35,15 +35,10 @@
 <br>
 
 <p align="left">
-  <img width="49%" alt="github stats" src="https://raw.githubusercontent.com/liwidale/liwidale/output/stats.svg" />
-  <img width="49%" alt="most used languages" src="https://raw.githubusercontent.com/liwidale/liwidale/output/languages.svg" />
+  <img width="49%" alt="github stats" src="https://liwidale.github.io/liwidale/stats.svg" />
+  <img width="49%" alt="most used languages" src="https://liwidale.github.io/liwidale/languages.svg" />
 </p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-dark.svg" />
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-light.svg" />
-  <img width="98%" alt="contribution graph eaten by a snake" src="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-dark.svg" />
-</picture>
 
 <br>
 

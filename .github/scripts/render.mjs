@@ -1,5 +1,3 @@
-// Renders the profile visuals (banner, terminal, project cards, stats, languages) as SVG.
-// Usage: GITHUB_TOKEN=... node .github/scripts/render.mjs <out-dir>
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -75,7 +73,6 @@ async function query() {
   return json.data.user;
 }
 
-// Both windows share one size, so they line up side by side in the README.
 const WIN = { W: 480, H: 304, BAR: 34 };
 
 const chrome = (title, content) => `<rect x="0.5" y="0.5" width="${WIN.W - 1}" height="${WIN.H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
