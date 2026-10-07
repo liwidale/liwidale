@@ -168,7 +168,7 @@ function stats(user) {
 <text x="20" y="${y}" class="sans" font-size="13" fill="${C.muted}">${label}</text>
 <text x="${W - 20}" y="${y}" text-anchor="end" class="mono" font-size="13" fill="${C.text}">${num(value)}</text>`;
   }).join("\n");
-  return svg(W, H, `<g class="card">\n${frame(W, H, "the numbers")}\n${body}\n</g>`);
+  return svg(W, H, `<g class="card">\n${frame(W, H, "github stats")}\n${body}\n</g>`);
 }
 
 function languages(user) {
@@ -201,7 +201,7 @@ function languages(user) {
 <text x="${cx + BAR / 2 - 24}" y="${cy}" text-anchor="end" class="mono" font-size="12.5" fill="${C.muted}">${l.pct.toFixed(1)}%</text>`;
   }).join("\n");
   return svg(W, H, `<g class="card">
-${frame(W, H, "the languages")}
+${frame(W, H, "languages")}
 <clipPath id="bar"><rect x="20" y="54" width="${BAR}" height="8" rx="4"/></clipPath>
 <g clip-path="url(#bar)">${bar}</g>
 ${legend}
