@@ -1,17 +1,7 @@
-<div align="left">
-  <img width="50%" alt="ゝ" src=".github/assets/banner.gif" />
-</div>
-
-<br>
-
-<b>ゝ find liwidale</b>
-
-<br>
-
-. computer-science student<br>
-. programmer, web designer & tech enthusiast<br>
-. building fast systems with beautiful interfaces<br>
-. turning complex ideas into simple experiences
+<p align="left">
+  <img width="49%" alt="ゝ" src=".github/assets/banner.gif" />
+  <img width="49%" alt="liwidale@Liwidale % whoami: liwidale, computer-science student. programmer, web designer and tech enthusiast. fast systems with beautiful interfaces, complex ideas turned into simple experiences." src="https://raw.githubusercontent.com/liwidale/liwidale/output/terminal.svg" />
+</p>
 
 <br>
 
@@ -19,10 +9,12 @@
 
 <br>
 
-. <a href="https://github.com/liwidale/kumo">kumo</a> · a companion at the top of your screen that keeps an eye on your coding agents<br>
-. <a href="https://github.com/liwidale/liauth">liauth</a> · an offline-first, end-to-end encrypted authenticator on a shared rust core<br>
-. <a href="https://github.com/liwidale/claude-portable">claude-portable</a> · claude code on a usb drive, one memory on every computer<br>
-. <a href="https://github.com/liwidale/lolzteam-api-ts">lolzteam-api-ts</a> · a typescript sdk for the lolzteam forum and market apis
+<p align="left">
+  <a href="https://github.com/liwidale/kumo"><img width="49%" alt="kumo: a desktop companion that lives at the top of your screen and keeps an eye on your coding agents" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/kumo.svg" /></a>
+  <a href="https://github.com/liwidale/liauth"><img width="49%" alt="liauth: offline-first, end-to-end encrypted authenticator for android, ios, macos and windows" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/liauth.svg" /></a>
+  <a href="https://github.com/liwidale/claude-portable"><img width="49%" alt="claude-portable: claude code on a usb drive, one memory on every computer" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/claude-portable.svg" /></a>
+  <a href="https://github.com/liwidale/lolzteam-api-ts"><img width="49%" alt="lolzteam-api-ts: typescript and javascript sdk for the lolzteam forum and market apis" src="https://raw.githubusercontent.com/liwidale/liwidale/output/projects/lolzteam-api-ts.svg" /></a>
+</p>
 
 <br>
 
@@ -30,13 +22,28 @@
 
 <br>
 
-. <code>rust</code> · <code>golang</code> · <code>kotlin</code> · <code>swift</code> · <code>dart</code><br>
-. <code>python</code> · <code>typescript</code> · <code>javascript</code><br>
-. <code>flutter</code> · <code>tauri</code> · <code>electron</code><br>
-. <code>react</code> · <code>next.js</code> · <code>node.js</code><br>
-. <code>postgres</code> · <code>redis</code> · <code>sqlite</code><br>
-. <code>tailwindcss</code> · <code>shadcn/ui</code> · <code>motion</code><br>
-. <code>figma</code> · <code>photoshop</code> · <code>after effects</code>
+<p align="left">
+  <img alt="rust, golang, kotlin, swift, dart, python, typescript, javascript, flutter, tauri, electron, react, next.js, node.js, postgres, redis, sqlite, tailwindcss, figma, photoshop, after effects" src="https://skillicons.dev/icons?i=rust,go,kotlin,swift,dart,python,ts,js,flutter,tauri,electron,react,nextjs,nodejs,postgres,redis,sqlite,tailwind,figma,ps,ae&theme=dark&perline=11" />
+</p>
+
+. plus <code>shadcn/ui</code> · <code>motion</code>
+
+<br>
+
+<b>ゝ the numbers:</b>
+
+<br>
+
+<p align="left">
+  <img width="49%" alt="github stats" src="https://raw.githubusercontent.com/liwidale/liwidale/output/stats.svg" />
+  <img width="49%" alt="most used languages" src="https://raw.githubusercontent.com/liwidale/liwidale/output/languages.svg" />
+</p>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-dark.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-light.svg" />
+  <img width="98%" alt="contribution graph eaten by a snake" src="https://raw.githubusercontent.com/liwidale/liwidale/output/snake-dark.svg" />
+</picture>
 
 <br>
 
