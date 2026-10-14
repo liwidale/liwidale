@@ -1,5 +1,5 @@
 <p align="left">
-  <img width="49%" alt="ゝ" src="https://liwidale.github.io/liwidale/banner.svg" />
+  <img width="49%" alt="ゝ" src="https://liwidale.github.io/liwidale/banner.svg?v=af154aa" />
   <img width="49%" alt="liwidale@Liwidale % whoami: liwidale, computer-science student. programmer, web designer and tech enthusiast. fast systems with beautiful interfaces, complex ideas turned into simple experiences." src="https://liwidale.github.io/liwidale/terminal.svg" />
 </p>
 
@@ -27,6 +27,8 @@
 
 <p align="left">
   <img alt="rust, typescript, swift, kotlin, javascript, powershell, bash, electron, tauri, react, next.js, tailwindcss, vite, node.js, jest, github actions, android studio, macos, windows, linux" src="https://skillicons.dev/icons?i=rust,ts,swift,kotlin,js,powershell,bash,electron,tauri,react,nextjs,tailwind,vite,nodejs,jest,githubactions,androidstudio,apple,windows,linux&theme=dark&perline=7" />
+  <br>
+  <img alt="figma, photoshop, premiere pro, after effects, blender" src="https://skillicons.dev/icons?i=figma,ps,pr,ae,blender&theme=dark&perline=7" />
 </p>
 
 . plus <code>swiftui</code> · <code>jetpack compose</code> · <code>egui</code> · <code>tokio</code> · <code>uniffi</code> · <code>motion</code> · <code>zustand</code> · <code>mcp</code>
