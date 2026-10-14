@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const LOGIN = "liwidale";
-const PROJECTS = ["kumo", "liauth", "claude-portable", "lolzteam-api-ts"];
+const PROJECTS = ["kumo", "liauth", "localhost", "dropzone", "claude-portable", "lolzteam-api-ts"];
 const OUT = process.argv[2] ?? "dist";
 const BANNER = new URL("../assets/banner.gif", import.meta.url);
 
@@ -219,9 +219,18 @@ ${legend}
 </g>`);
 }
 
+function viewAll(user) {
+  const W = 880, H = 52;
+  const count = user.repositories.nodes.filter((r) => r.name !== LOGIN).length;
+  return svg(W, H, `<g class="card">
+<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
+<text x="${W / 2}" y="31" text-anchor="middle" class="sans" font-size="14" font-weight="600" fill="${C.text}"><tspan fill="${C.accent}">ゝ</tspan> view all ${count} projects <tspan fill="${C.muted}">→</tspan></text>
+</g>`);
+}
+
 const user = await query();
 mkdirSync(join(OUT, "projects"), { recursive: true });
-const files = { "banner.svg": banner(), "terminal.svg": terminal(), "stats.svg": stats(user), "languages.svg": languages(user) };
+const files = { "banner.svg": banner(), "terminal.svg": terminal(), "stats.svg": stats(user), "languages.svg": languages(user), "projects/all.svg": viewAll(user) };
 for (const name of PROJECTS) {
   const repo = user.repositories.nodes.find((r) => r.name === name);
   if (repo) files[`projects/${name}.svg`] = project(repo);

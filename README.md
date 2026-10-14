@@ -12,8 +12,11 @@
 <p align="left">
   <a href="https://github.com/liwidale/kumo"><img width="49%" alt="kumo: a desktop companion that lives at the top of your screen and keeps an eye on your coding agents" src="https://liwidale.github.io/liwidale/projects/kumo.svg" /></a>
   <a href="https://github.com/liwidale/liauth"><img width="49%" alt="liauth: offline-first, end-to-end encrypted authenticator for android, ios, macos and windows" src="https://liwidale.github.io/liwidale/projects/liauth.svg" /></a>
+  <a href="https://github.com/liwidale/localhost"><img width="49%" alt="localhost: a desktop app that turns running processes and ports into projects and services" src="https://liwidale.github.io/liwidale/projects/localhost.svg" /></a>
+  <a href="https://github.com/liwidale/dropzone"><img width="49%" alt="dropzone: a local-first desktop app that sorts your downloads with rules you can preview and undo" src="https://liwidale.github.io/liwidale/projects/dropzone.svg" /></a>
   <a href="https://github.com/liwidale/claude-portable"><img width="49%" alt="claude-portable: claude code on a usb drive, one memory on every computer" src="https://liwidale.github.io/liwidale/projects/claude-portable.svg" /></a>
   <a href="https://github.com/liwidale/lolzteam-api-ts"><img width="49%" alt="lolzteam-api-ts: typescript and javascript sdk for the lolzteam forum and market apis" src="https://liwidale.github.io/liwidale/projects/lolzteam-api-ts.svg" /></a>
+  <a href="https://github.com/liwidale?tab=repositories"><img width="98%" alt="view all projects" src="https://liwidale.github.io/liwidale/projects/all.svg" /></a>
 </p>
 
 <br>
@@ -23,10 +26,10 @@
 <br>
 
 <p align="left">
-  <img alt="rust, golang, kotlin, swift, dart, python, typescript, javascript, flutter, tauri, electron, react, next.js, node.js, postgres, redis, sqlite, tailwindcss, figma, photoshop, after effects" src="https://skillicons.dev/icons?i=rust,go,kotlin,swift,dart,python,ts,js,flutter,tauri,electron,react,nextjs,nodejs,postgres,redis,sqlite,tailwind,figma,ps,ae&theme=dark&perline=11" />
+  <img alt="rust, typescript, swift, kotlin, javascript, powershell, bash, electron, tauri, react, next.js, tailwindcss, vite, node.js, jest, github actions, android studio, macos, windows, linux" src="https://skillicons.dev/icons?i=rust,ts,swift,kotlin,js,powershell,bash,electron,tauri,react,nextjs,tailwind,vite,nodejs,jest,githubactions,androidstudio,apple,windows,linux&theme=dark&perline=7" />
 </p>
 
-. plus <code>shadcn/ui</code> · <code>motion</code>
+. plus <code>swiftui</code> · <code>jetpack compose</code> · <code>egui</code> · <code>tokio</code> · <code>uniffi</code> · <code>motion</code> · <code>zustand</code> · <code>mcp</code>
 
 <br>
 
