@@ -4,236 +4,193 @@ import { join } from "node:path";
 const LOGIN = "liwidale";
 const PROJECTS = ["kumo", "liauth", "localhost", "dropzone", "claude-portable", "lolzteam-api-ts"];
 const OUT = process.argv[2] ?? "dist";
-const BANNER = new URL("../assets/banner.gif", import.meta.url);
+const ART = JSON.parse(readFileSync(new URL("../assets/art.json", import.meta.url), "utf8"));
+const TOKEN = process.env.GITHUB_TOKEN;
 
-const C = { bg: "#0A0A0A", border: "#262626", text: "#EDEDED", muted: "#A1A1A1", dim: "#525252", accent: "#4C9DFF" };
-const SANS = "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+const C = { bg: "#0A0A0A", border: "#262626", text: "#EDEDED", muted: "#A1A1A1", dim: "#525252", key: "#F03038", blue: "#4C9DFF", green: "#3AD37E" };
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+const FS = 14.5, CW = FS * 0.6, LH = 22, COLS = 55;
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const num = (n) => n.toLocaleString("en-US");
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-const svg = (w, h, body, style = "") => `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none">
+const svg = (w, h, body) => `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" fill="none">
 <style>
-  .sans { font-family: ${SANS}; } .mono { font-family: ${MONO}; }
-  .card { animation: in 150ms ease-out both; }
+  text { font-family: ${MONO}; }
+  .in { animation: in 400ms ease-out both; }
   @keyframes in { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
-  ${style}
 </style>
 ${body}
 </svg>
 `;
 
-const frame = (w, h, title) => `<rect x="0.5" y="0.5" width="${w - 1}" height="${h - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
-<text x="20" y="34" class="sans" font-size="15" font-weight="600" fill="${C.text}"><tspan fill="${C.accent}">ゝ</tspan> ${esc(title)}</text>`;
-
-function wrap(text, max, lines) {
-  const out = [""];
-  for (const word of text.split(/\s+/)) {
-    const cur = out[out.length - 1];
-    if ((cur + " " + word).trim().length <= max) out[out.length - 1] = (cur + " " + word).trim();
-    else out.push(word);
-  }
-  if (out.length > lines) {
-    out.length = lines;
-    out[lines - 1] = out[lines - 1].replace(/[\s,.;:]*\S{0,3}$/, "") + "…";
-  }
-  return out;
+function api(path, body) {
+  if (!TOKEN) throw new Error("GITHUB_TOKEN is not set");
+  return fetch(`https://api.github.com${path}`, {
+    method: body ? "POST" : "GET",
+    headers: { Authorization: `bearer ${TOKEN}`, "Content-Type": "application/json", "User-Agent": LOGIN },
+    body: body && JSON.stringify(body),
+  });
 }
 
 async function query() {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) throw new Error("GITHUB_TOKEN is not set");
-  const res = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: { Authorization: `bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      variables: { login: LOGIN },
-      query: `query($login: String!) {
-        user(login: $login) {
-          followers { totalCount }
-          contributionsCollection { totalCommitContributions restrictedContributionsCount contributionCalendar { totalContributions } }
-          repositories(ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
-            totalCount
-            nodes {
-              name description stargazerCount
-              primaryLanguage { name color }
-              licenseInfo { spdxId }
-              latestRelease { tagName }
-              languages(first: 10, orderBy: { field: SIZE, direction: DESC }) { edges { size node { name color } } }
-            }
-          }
+  const res = await api("/graphql", {
+    variables: { login: LOGIN },
+    query: `query($login: String!) {
+      user(login: $login) {
+        createdAt
+        followers { totalCount }
+        repositoriesContributedTo(contributionTypes: [COMMIT, PULL_REQUEST]) { totalCount }
+        contributionsCollection { totalCommitContributions restrictedContributionsCount }
+        repositories(ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
+          nodes { name description stargazerCount primaryLanguage { name } latestRelease { tagName } }
         }
-      }`,
-    }),
+      }
+    }`,
   });
   const json = await res.json();
   if (!res.ok || json.errors) throw new Error(JSON.stringify(json.errors ?? json));
   return json.data.user;
 }
 
-const WIN = { W: 480, H: 304, BAR: 34 };
-
-const chrome = (title, content) => `<rect x="0.5" y="0.5" width="${WIN.W - 1}" height="${WIN.H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
-<circle cx="18" cy="17" r="5" fill="${C.border}"/><circle cx="36" cy="17" r="5" fill="${C.border}"/><circle cx="54" cy="17" r="5" fill="${C.border}"/>
-<text x="${WIN.W / 2}" y="21" text-anchor="middle" class="mono" font-size="11" fill="${C.dim}">${esc(title)}</text>
-<clipPath id="screen"><rect x="1" y="${WIN.BAR + 1}" width="${WIN.W - 2}" height="${WIN.H - WIN.BAR - 2}" rx="7"/></clipPath>
-<g clip-path="url(#screen)">
-${content}</g>
-<line x1="1" y1="${WIN.BAR + 0.5}" x2="${WIN.W - 1}" y2="${WIN.BAR + 0.5}" stroke="${C.border}"/>`;
-
-function banner() {
-  const gif = readFileSync(BANNER).toString("base64");
-  const { W, H, BAR } = WIN;
-  return svg(W, H, chrome("liwidale — banner.gif",
-    `<image x="1" y="${BAR + 1}" width="${W - 2}" height="${H - BAR - 2}" preserveAspectRatio="xMidYMid slice" href="data:image/gif;base64,${gif}"/>
-`));
-}
-
-function terminal() {
-  const { W, H } = WIN, X = 18, LH = 27, FS = 13, CW = FS * 0.6;
-  const PROMPT = "liwidale@Liwidale %";
-  const script = [
-    ["cmd", "whoami"], ["out", "liwidale · computer-science student"],
-    ["cmd", "cat roles.txt"], ["out", "programmer · web designer · tech enthusiast"],
-    ["cmd", "cat focus.txt"], ["out", "fast systems with beautiful interfaces"], ["out", "complex ideas, simple experiences"],
-    ["end", ""],
-  ];
-  let t = 0.4, y = 66, body = "", keyframes = "";
-  script.forEach(([kind, text], i) => {
-    const cmdX = X + (PROMPT.length + 1) * CW;
-    const fixed = (s) => `textLength="${(s.length * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs"`;
-    if (kind === "out") {
-      body += `<text x="${X}" y="${y}" class="mono ln" font-size="${FS}" fill="${C.muted}" ${fixed(text)} style="animation-delay:${t.toFixed(2)}s">${esc(text)}</text>\n`;
-      t += 0.15;
-    } else {
-      const n = text.length, dur = n * 0.07, w = n * CW;
-      const caret = kind === "end"
-        ? `<rect x="${cmdX}" y="${y - FS + 2}" width="${CW}" height="${FS + 2}" fill="${C.accent}" class="blink"/>`
-        : `<rect x="${cmdX}" y="${y - FS + 2}" width="${CW}" height="${FS + 2}" fill="${C.accent}" class="gone" style="animation-delay:${(t + 0.35 + dur + 0.25).toFixed(2)}s"/>`;
-      if (n) keyframes += `@keyframes t${i} { to { transform: translateX(${w.toFixed(1)}px); } }\n`;
-      body += `<g class="ln" style="animation-delay:${t.toFixed(2)}s">
-  <text x="${X}" y="${y}" class="mono" font-size="${FS}" ${fixed(PROMPT)}><tspan fill="${C.accent}">liwidale</tspan><tspan fill="${C.dim}">@</tspan><tspan fill="${C.text}">Liwidale</tspan><tspan fill="${C.dim}"> %</tspan></text>
-  ${n ? `<text x="${cmdX}" y="${y}" class="mono" font-size="${FS}" fill="${C.text}" ${fixed(text)}>${esc(text)}</text>` : ""}
-  <g ${n ? `style="animation: t${i} ${dur.toFixed(2)}s steps(${n}) ${(t + 0.35).toFixed(2)}s forwards"` : ""}>
-    ${n ? `<rect class="cover" x="${cmdX}" y="${y - FS - 2}" width="${W}" height="${LH}" fill="${C.bg}"/>` : ""}
-    ${caret}
-  </g>
-</g>\n`;
-      t += 0.35 + dur + 0.3;
-    }
-    y += kind === "out" && script[i + 1]?.[0] !== "out" ? LH + 4 : LH;
-  });
-  return svg(W, H, chrome("liwidale — zsh — 80×24", body), `
-  .ln { opacity: 0; animation: show 0.01s forwards; }
-  @keyframes show { to { opacity: 1; } }
-  .gone { animation: hide 0.01s forwards; }
-  @keyframes hide { to { opacity: 0; } }
-  .blink { animation: blink 1s steps(1) infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-  ${keyframes}
-  @media (prefers-reduced-motion: reduce) { .ln { opacity: 1; } .cover { display: none; } .gone { opacity: 0; } }`);
-}
-
-const STAR = `M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z`;
-
-function project(repo) {
-  const W = 440, H = 150;
-  const desc = wrap(repo.description ?? "", 56, 3)
-    .map((l, i) => `<text x="20" y="${62 + i * 19}" class="sans" font-size="13" fill="${C.muted}">${esc(l)}</text>`).join("\n");
-  const lang = repo.primaryLanguage;
-  const tag = repo.latestRelease?.tagName;
-  const tagW = tag ? tag.length * 7.2 + 18 : 0;
-  let x = 20, meta = "";
-  if (lang) {
-    meta += `<circle cx="${x + 5}" cy="124" r="5" fill="${lang.color ?? C.muted}"/><text x="${x + 16}" y="128" class="mono" font-size="12" fill="${C.muted}">${esc(lang.name.toLowerCase())}</text>`;
-    x += 16 + lang.name.length * 7.2 + 20;
-  }
-  meta += `<path d="${STAR}" transform="translate(${x} 116) scale(0.8)" fill="${C.muted}"/><text x="${x + 18}" y="128" class="mono" font-size="12" fill="${C.muted}">${num(repo.stargazerCount)}</text>`;
-  x += 18 + String(repo.stargazerCount).length * 7.2 + 20;
-  if (repo.licenseInfo?.spdxId && repo.licenseInfo.spdxId !== "NOASSERTION")
-    meta += `<text x="${x}" y="128" class="mono" font-size="12" fill="${C.dim}">${esc(repo.licenseInfo.spdxId.toLowerCase())}</text>`;
-  return svg(W, H, `<g class="card">
-${frame(W, H, repo.name)}
-${tag ? `<rect x="${W - 20 - tagW + 0.5}" y="17.5" width="${tagW}" height="22" rx="6" stroke="${C.border}"/><text x="${W - 20 - tagW / 2}" y="32.5" text-anchor="middle" class="mono" font-size="11.5" fill="${C.muted}">${esc(tag)}</text>` : ""}
-${desc}
-${meta}
-</g>`);
-}
-
-function stats(user) {
-  const W = 440, H = 200;
-  const c = user.contributionsCollection;
-  const repos = user.repositories.nodes.filter((r) => r.name !== LOGIN);
-  const rows = [
-    ["contributions · last year", c.contributionCalendar.totalContributions + c.restrictedContributionsCount],
-    ["commits · last year", c.totalCommitContributions],
-    ["stars earned", repos.reduce((s, r) => s + r.stargazerCount, 0)],
-    ["public repositories", repos.length],
-    ["followers", user.followers.totalCount],
-  ];
-  const body = rows.map(([label, value], i) => {
-    const y = 74 + i * 25;
-    return `${i ? `<line x1="20" y1="${y - 17.5}" x2="${W - 20}" y2="${y - 17.5}" stroke="${C.border}"/>` : ""}
-<text x="20" y="${y}" class="sans" font-size="13" fill="${C.muted}">${label}</text>
-<text x="${W - 20}" y="${y}" text-anchor="end" class="mono" font-size="13" fill="${C.text}">${num(value)}</text>`;
-  }).join("\n");
-  return svg(W, H, `<g class="card">\n${frame(W, H, "github stats")}\n${body}\n</g>`);
-}
-
-function languages(user) {
-  const W = 440, H = 200, BAR = W - 40;
-  const total = new Map();
-  for (const r of user.repositories.nodes) {
-    if (r.name === LOGIN) continue;
-    for (const { size, node } of r.languages.edges) {
-      const cur = total.get(node.name) ?? { size: 0, color: node.color ?? C.muted };
-      cur.size += size;
-      total.set(node.name, cur);
+async function linesOfCode(repos) {
+  let add = 0, del = 0;
+  for (const { name } of repos) {
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const res = await api(`/repos/${LOGIN}/${name}/stats/contributors`);
+      if (res.status === 202) { await sleep(3000); continue; }
+      if (!res.ok) break;
+      const me = (await res.json()).find((c) => c.author?.login?.toLowerCase() === LOGIN);
+      for (const w of me?.weeks ?? []) add += w.a, del += w.d;
+      break;
     }
   }
-  const all = [...total].sort((a, b) => b[1].size - a[1].size);
-  const sum = all.reduce((s, [, v]) => s + v.size, 0) || 1;
-  const top = all.slice(0, 5).map(([name, v]) => ({ name, color: v.color, pct: (v.size / sum) * 100 }));
-  const rest = 100 - top.reduce((s, l) => s + l.pct, 0);
-  if (rest >= 0.1) top.push({ name: "other", color: C.dim, pct: rest });
-
-  let x = 20, bar = "";
-  top.forEach((l, i) => {
-    const w = (l.pct / 100) * BAR;
-    bar += `<rect x="${x.toFixed(1)}" y="54" width="${Math.max(w - (i < top.length - 1 ? 2 : 0), 1).toFixed(1)}" height="8" fill="${l.color}"/>`;
-    x += w;
-  });
-  const legend = top.map((l, i) => {
-    const cx = 20 + (i % 2) * (BAR / 2), cy = 96 + Math.floor(i / 2) * 30;
-    return `<circle cx="${cx + 5}" cy="${cy - 4}" r="5" fill="${l.color}"/>
-<text x="${cx + 18}" y="${cy}" class="mono" font-size="12.5" fill="${C.text}">${esc(l.name.toLowerCase())}</text>
-<text x="${cx + BAR / 2 - 24}" y="${cy}" text-anchor="end" class="mono" font-size="12.5" fill="${C.muted}">${l.pct.toFixed(1)}%</text>`;
-  }).join("\n");
-  return svg(W, H, `<g class="card">
-${frame(W, H, "languages")}
-<clipPath id="bar"><rect x="20" y="54" width="${BAR}" height="8" rx="4"/></clipPath>
-<g clip-path="url(#bar)">${bar}</g>
-${legend}
-</g>`);
+  return { add, del };
 }
 
-function viewAll(user) {
-  const W = 880, H = 52;
-  const count = user.repositories.nodes.filter((r) => r.name !== LOGIN).length;
-  return svg(W, H, `<g class="card">
-<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
-<text x="${W / 2}" y="31" text-anchor="middle" class="sans" font-size="14" font-weight="600" fill="${C.text}"><tspan fill="${C.accent}">ゝ</tspan> view all ${count} projects <tspan fill="${C.muted}">→</tspan></text>
-</g>`);
+function uptime(since) {
+  const a = new Date(since), b = new Date();
+  let months = (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + b.getUTCMonth() - a.getUTCMonth();
+  if (b.getUTCDate() < a.getUTCDate()) months--;
+  const anchor = new Date(Date.UTC(a.getUTCFullYear(), a.getUTCMonth() + months, a.getUTCDate()));
+  const days = Math.floor((b - anchor) / 864e5), years = Math.floor(months / 12), m = months % 12;
+  const unit = (n, s) => `${n} ${s}${n === 1 ? "" : "s"}`;
+  return [years && unit(years, "year"), unit(m, "month"), unit(days, "day")].filter(Boolean).join(", ");
+}
+
+const span = (text, fill, weight) => `<tspan fill="${fill}"${weight ? ` font-weight="${weight}"` : ""}>${esc(text)}</tspan>`;
+
+function leader(key, value, width = COLS, valueSpans = span(value, C.text)) {
+  const dots = Math.max(1, width - key.length - 2 - value.length - 1);
+  return { len: key.length + 2 + dots + 1 + value.length, spans: span(`${key}: `, C.key) + span(".".repeat(dots), C.dim) + " " + valueSpans };
+}
+
+function info(user, repos, loc) {
+  const stars = repos.reduce((s, r) => s + r.stargazerCount, 0);
+  const commits = user.contributionsCollection.totalCommitContributions + user.contributionsCollection.restrictedContributionsCount;
+  const rule = (title) => {
+    const head = `— ${title} `;
+    return { len: COLS, spans: span(head, C.blue) + span("─".repeat(COLS - head.length), C.border) };
+  };
+  const pair = (a, b) => {
+    const l = leader(a[0], a[1], 28), r = leader(b[0], b[1], COLS - 31);
+    return { len: l.len + 3 + r.len, spans: `${l.spans}${span(" | ", C.dim)}${r.spans}` };
+  };
+  const net = num(loc.add - loc.del), add = `${num(loc.add)}++`, del = `${num(loc.del)}--`;
+  const locSpans = span(`${net} `, C.text) + span("( ", C.dim) + span(add, C.green) + span(", ", C.dim) + span(del, C.key) + span(" )", C.dim);
+  return [
+    { len: COLS, spans: span("liwidale", C.blue, 600) + span("@", C.dim) + span("Liwidale ", C.blue, 600) + span("─".repeat(COLS - 18), C.border) },
+    null,
+    leader("OS", "macOS, Windows, Linux"),
+    leader("Uptime", uptime(user.createdAt)),
+    leader("Host", "Computer Science student"),
+    leader("Kernel", "Programmer, Web Designer"),
+    leader("Focus", "Fast systems, beautiful interfaces"),
+    null,
+    leader("Languages.Code", "Rust, TypeScript, Swift, Kotlin"),
+    leader("Languages.UI", "React, SwiftUI, Compose, egui"),
+    leader("Languages.Real", "Russian, English"),
+    leader("Desktop", "Electron, Tauri"),
+    leader("Design", "Figma, Photoshop, Premiere, AE, Blender"),
+    null,
+    rule("Contact"),
+    leader("Telegram", "t.me/liwidale"),
+    leader("X", "@liwidale"),
+    leader("Matrix", "@liwidale:matrix.org"),
+    leader("Discord", "@liwidale"),
+    null,
+    rule("GitHub Stats"),
+    pair(["Repos", `${repos.length} {Contributed: ${user.repositoriesContributedTo.totalCount}}`], ["Stars", num(stars)]),
+    pair(["Commits", num(commits)], ["Followers", num(user.followers.totalCount)]),
+    leader("Lines of Code", `${net} ( ${add}, ${del} )`, COLS, locSpans),
+  ];
+}
+
+function card(user, repos, loc) {
+  const W = 1000, PAD = 34, TOP = 50;
+  const lines = info(user, repos, loc);
+  const H = TOP + lines.length * LH + PAD - 6;
+  const IX = W - PAD - COLS * CW;
+
+  const artW = IX - PAD * 2 - 6, acw = artW / ART.cols, afs = acw / 0.6;
+  const artH = Math.min(H - PAD * 2, artW * 0.97), alh = artH / ART.rows;
+  const ax = PAD, ay = (H - artH) / 2 + alh * 0.8;
+  let art = "";
+  ART.lines.forEach((runs, y) => {
+    let x = 0;
+    for (const [fill, chars] of runs) {
+      if (fill) art += `<text x="${(ax + x * acw).toFixed(1)}" y="${(ay + y * alh).toFixed(1)}" font-size="${afs.toFixed(2)}" fill="${fill}" textLength="${(chars.length * acw).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${esc(chars)}</text>`;
+      x += chars.length;
+    }
+    art += "\n";
+  });
+
+  const text = lines
+    .map((l, i) => l && `<text x="${IX.toFixed(1)}" y="${TOP + i * LH}" font-size="${FS}" textLength="${(l.len * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${l.spans}</text>`)
+    .filter(Boolean)
+    .join("\n");
+
+  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="10" fill="${C.bg}" stroke="${C.border}"/>
+<g class="in">
+${art}</g>
+${text}`);
+}
+
+function heading(title) {
+  const W = 1000, H = 40, cols = Math.floor((W - 2) / CW), head = `— ${title} `;
+  return svg(W, H, `<text x="1" y="26" font-size="${FS}" textLength="${(cols * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${span(head, C.blue)}${span("─".repeat(cols - head.length), C.border)}</text>`);
+}
+
+const clip = (text, max) => (text.length <= max ? text : text.slice(0, max - 1).replace(/[\s,.;:]+\S*$/, "") + "…");
+
+function row(repo) {
+  const W = 1000, H = 52, X = 24, cols = Math.floor((W - X * 2) / CW);
+  const lang = repo.primaryLanguage?.name.toLowerCase() ?? "";
+  const meta = [repo.latestRelease?.tagName, lang, `★ ${repo.stargazerCount}`].filter(Boolean).join(" · ") + "  →";
+  const nameW = 20, dots = nameW - repo.name.length - 3;
+  const desc = clip(repo.description ?? "", cols - nameW - meta.length - 3);
+  const gap = Math.max(1, cols - 2 - repo.name.length - 1 - dots - 1 - desc.length - meta.length);
+  const line = span("ゝ ", C.key) + span(repo.name, C.text, 600) + " " + span(".".repeat(dots), C.dim) + " " + span(desc, C.muted) + " ".repeat(gap) + span(meta, C.dim);
+  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
+<text x="${X}" y="31" font-size="${FS}" xml:space="preserve" textLength="${(cols * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${line}</text>`);
+}
+
+function viewAll(count) {
+  const W = 1000, H = 52;
+  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
+<text x="${W / 2}" y="31" font-size="${FS}" text-anchor="middle">${span("ゝ ", C.key)}${span(`view all ${count} projects`, C.text, 600)}${span("  →", C.dim)}</text>`);
 }
 
 const user = await query();
+const repos = user.repositories.nodes.filter((r) => r.name !== LOGIN);
+const loc = await linesOfCode(repos);
 mkdirSync(join(OUT, "projects"), { recursive: true });
-const files = { "banner.svg": banner(), "terminal.svg": terminal(), "stats.svg": stats(user), "languages.svg": languages(user), "projects/all.svg": viewAll(user) };
+const files = { "card.svg": card(user, repos, loc), "projects.svg": heading("Projects"), "projects/all.svg": viewAll(repos.length) };
 for (const name of PROJECTS) {
-  const repo = user.repositories.nodes.find((r) => r.name === name);
-  if (repo) files[`projects/${name}.svg`] = project(repo);
+  const repo = repos.find((r) => r.name === name);
+  if (repo) files[`projects/${name}.svg`] = row(repo);
 }
 for (const [name, content] of Object.entries(files)) writeFileSync(join(OUT, name), content);
-console.log(`rendered ${Object.keys(files).length} files to ${OUT}`);
+console.log(`rendered ${Object.keys(files).length} files to ${OUT}, loc +${loc.add} -${loc.del}`);
