@@ -1,13 +1,23 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 
 const LOGIN = "liwidale";
-const PROJECTS = ["kumo", "liauth", "localhost", "dropzone", "claude-portable", "lolzteam-api-ts"];
+const SLOTS = 6;
+const CONTACTS = [
+  ["telegram", "Telegram", "@liwidale"],
+  ["x", "X", "@liwidale"],
+  ["youtube", "YouTube", "@liwidale"],
+  ["reddit", "Reddit", "u/liwidale"],
+  ["matrix", "Matrix", "@liwidale:matrix.org"],
+  ["discord", "Discord", "@liwidale"],
+];
 const OUT = process.argv[2] ?? "dist";
-const ART = JSON.parse(readFileSync(new URL("../assets/art.json", import.meta.url), "utf8"));
+const asset = (name) => JSON.parse(readFileSync(new URL(`../assets/${name}`, import.meta.url), "utf8"));
+const ART = asset("art.json");
+const ICONS = asset("icons.json");
 const TOKEN = process.env.GITHUB_TOKEN;
 
-const C = { bg: "#0A0A0A", border: "#262626", text: "#EDEDED", muted: "#A1A1A1", dim: "#525252", key: "#F03038", blue: "#4C9DFF", green: "#3AD37E" };
+const C = { bg: "#0A0A0A", border: "#262626", text: "#EDEDED", muted: "#A1A1A1", dim: "#525252", key: "#F03038", blue: "#4C9DFF", green: "#3AD37E", star: "#E3B341", pill: "#141414" };
 const MONO = "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 const FS = 14.5, CW = FS * 0.6, LH = 22, COLS = 55;
 
@@ -45,7 +55,7 @@ async function query() {
         repositoriesContributedTo(contributionTypes: [COMMIT, PULL_REQUEST]) { totalCount }
         contributionsCollection { totalCommitContributions restrictedContributionsCount }
         repositories(ownerAffiliations: OWNER, privacy: PUBLIC, isFork: false, first: 100, orderBy: { field: PUSHED_AT, direction: DESC }) {
-          nodes { name description stargazerCount primaryLanguage { name } latestRelease { tagName } }
+          nodes { name description stargazerCount primaryLanguage { name color } latestRelease { tagName } }
         }
       }
     }`,
@@ -115,12 +125,6 @@ function info(user, repos, loc) {
     leader("Desktop", "Electron, Tauri"),
     leader("Design", "Figma, Photoshop, Premiere, AE, Blender"),
     null,
-    rule("Contact"),
-    leader("Telegram", "t.me/liwidale"),
-    leader("X", "@liwidale"),
-    leader("Matrix", "@liwidale:matrix.org"),
-    leader("Discord", "@liwidale"),
-    null,
     rule("GitHub Stats"),
     pair(["Repos", `${repos.length} {Contributed: ${user.repositoriesContributedTo.totalCount}}`], ["Stars", num(stars)]),
     pair(["Commits", num(commits)], ["Followers", num(user.followers.totalCount)]),
@@ -163,34 +167,82 @@ function heading(title) {
   return svg(W, H, `<text x="1" y="26" font-size="${FS}" textLength="${(cols * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${span(head, C.blue)}${span("─".repeat(cols - head.length), C.border)}</text>`);
 }
 
-const clip = (text, max) => (text.length <= max ? text : text.slice(0, max - 1).replace(/[\s,.;:]+\S*$/, "") + "…");
+const clip = (text, max) => (text.length <= max ? text : text.slice(0, Math.max(0, max - 1)).replace(/[\s,.;:]+\S*$/, "") + "…");
+const box = (W, H) => `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>`;
+const glyph = (d, x, y, size, from, fill) => `<path d="${d}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(size / from).toFixed(4)})" fill="${fill}"/>`;
+
+function pill(label, { icon, iconFill, dot, text = C.text }) {
+  const lead = icon || dot ? 21 : 0, w = 12 + lead + label.length * CW + 12, PH = 28;
+  return {
+    w,
+    at: (x, H) => {
+      const y = (H - PH) / 2;
+      let out = `<rect x="${(x + 0.5).toFixed(1)}" y="${y + 0.5}" width="${w.toFixed(1)}" height="${PH - 1}" rx="6" fill="${C.pill}" stroke="${C.border}"/>`;
+      if (icon) out += glyph(icon, x + 12, H / 2 - 7, 14, ICONS.size.octicon, iconFill);
+      if (dot) out += `<circle cx="${(x + 18).toFixed(1)}" cy="${H / 2}" r="5" fill="${dot}"/>`;
+      return out + `<text x="${(x + 12 + lead).toFixed(1)}" y="${H / 2 + 5}" font-size="${FS - 1}" fill="${text}" textLength="${(label.length * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${esc(label)}</text>`;
+    },
+  };
+}
 
 function row(repo) {
-  const W = 1000, H = 52, X = 24, cols = Math.floor((W - X * 2) / CW);
-  const lang = repo.primaryLanguage?.name.toLowerCase() ?? "";
-  const meta = [repo.latestRelease?.tagName, lang, `★ ${repo.stargazerCount}`].filter(Boolean).join(" · ") + "  →";
-  const nameW = 20, dots = nameW - repo.name.length - 3;
-  const desc = clip(repo.description ?? "", cols - nameW - meta.length - 3);
-  const gap = Math.max(1, cols - 2 - repo.name.length - 1 - dots - 1 - desc.length - meta.length);
-  const line = span("ゝ ", C.key) + span(repo.name, C.text, 600) + " " + span(".".repeat(dots), C.dim) + " " + span(desc, C.muted) + " ".repeat(gap) + span(meta, C.dim);
-  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
+  const W = 1000, H = 52, X = 24, GAP = 8;
+  const pills = [pill(String(repo.stargazerCount), { icon: ICONS.octicon["star-fill"], iconFill: C.star })];
+  if (repo.latestRelease) pills.push(pill(repo.latestRelease.tagName, { icon: ICONS.octicon.tag, iconFill: C.blue }));
+  if (repo.primaryLanguage) pills.push(pill(repo.primaryLanguage.name.toLowerCase(), { dot: repo.primaryLanguage.color ?? C.muted, text: C.muted }));
+  let x = W - 14, right = "";
+  for (const p of pills) { x -= p.w; right = p.at(x, H) + right; x -= GAP; }
+  const cols = Math.floor((x - X - 12) / CW), nameW = 20, dots = Math.max(1, nameW - repo.name.length - 3);
+  const desc = clip(repo.description ?? "", cols - 2 - repo.name.length - 1 - dots - 1);
+  const len = 2 + repo.name.length + 1 + dots + 1 + desc.length;
+  const line = span("ゝ ", C.key) + span(repo.name, C.text, 600) + " " + span(".".repeat(dots), C.dim) + " " + span(desc, C.muted);
+  return svg(W, H, `${box(W, H)}
+<text x="${X}" y="31" font-size="${FS}" xml:space="preserve" textLength="${(len * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${line}</text>
+${right}`);
+}
+
+function contact([id, name, handle]) {
+  const W = 490, H = 52, X = 54, cols = Math.floor((W - 20 - X) / CW);
+  const dots = Math.max(1, cols - name.length - handle.length - 2);
+  const line = span(name, C.text, 600) + " " + span(".".repeat(dots), C.dim) + " " + span(handle, C.muted);
+  return svg(W, H, `${box(W, H)}
+${glyph(ICONS.brand[id], 20, H / 2 - 10, 20, ICONS.size.brand, C.text)}
 <text x="${X}" y="31" font-size="${FS}" xml:space="preserve" textLength="${(cols * CW).toFixed(1)}" lengthAdjust="spacingAndGlyphs">${line}</text>`);
 }
 
 function viewAll(count) {
   const W = 1000, H = 52;
-  return svg(W, H, `<rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" rx="8" fill="${C.bg}" stroke="${C.border}"/>
-<text x="${W / 2}" y="31" font-size="${FS}" text-anchor="middle">${span("ゝ ", C.key)}${span(`view all ${count} projects`, C.text, 600)}${span("  →", C.dim)}</text>`);
+  return svg(W, H, `${box(W, H)}
+<text x="${W / 2}" y="31" font-size="${FS}" text-anchor="middle">${span("ゝ ", C.key)}${span(`view all ${count} projects`, C.text, 600)}</text>`);
 }
+
+const redirect = (url, title) => `<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>${esc(title)}</title>
+<meta http-equiv="refresh" content="0; url=${esc(url)}">
+<link rel="canonical" href="${esc(url)}">
+<a href="${esc(url)}">${esc(title)}</a>
+</html>
+`;
 
 const user = await query();
 const repos = user.repositories.nodes.filter((r) => r.name !== LOGIN);
+const top = [...repos].sort((a, b) => b.stargazerCount - a.stargazerCount).slice(0, SLOTS);
 const loc = await linesOfCode(repos);
-mkdirSync(join(OUT, "projects"), { recursive: true });
-const files = { "card.svg": card(user, repos, loc), "projects.svg": heading("Projects"), "projects/all.svg": viewAll(repos.length) };
-for (const name of PROJECTS) {
-  const repo = repos.find((r) => r.name === name);
-  if (repo) files[`projects/${name}.svg`] = row(repo);
+const files = {
+  "card.svg": card(user, repos, loc),
+  "projects.svg": heading("Projects"),
+  "contact.svg": heading("Contact"),
+  "projects/all.svg": viewAll(repos.length),
+};
+top.forEach((repo, i) => {
+  files[`projects/${i + 1}.svg`] = row(repo);
+  files[`go/${i + 1}/index.html`] = redirect(`https://github.com/${LOGIN}/${repo.name}`, repo.name);
+});
+for (const c of CONTACTS) files[`contact/${c[0]}.svg`] = contact(c);
+for (const [name, content] of Object.entries(files)) {
+  mkdirSync(dirname(join(OUT, name)), { recursive: true });
+  writeFileSync(join(OUT, name), content);
 }
-for (const [name, content] of Object.entries(files)) writeFileSync(join(OUT, name), content);
-console.log(`rendered ${Object.keys(files).length} files to ${OUT}, loc +${loc.add} -${loc.del}`);
+console.log(`rendered ${Object.keys(files).length} files to ${OUT}: ${top.map((r) => `${r.name} ${r.stargazerCount}`).join(", ")}`);

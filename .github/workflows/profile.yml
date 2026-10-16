@@ -2,11 +2,11 @@ name: profile
 
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [".github/scripts/**", ".github/assets/**", ".github/workflows/profile.yml"]
+    paths: ["README.md", ".github/scripts/**", ".github/assets/**", ".github/workflows/profile.yml"]
 
 permissions:
   contents: read
@@ -41,3 +41,12 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@v5
+
+      - name: Refresh image cache
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          sleep 30
+          gh api "repos/${{ github.repository }}/readme" -H "Accept: application/vnd.github.html" \
+            | grep -o 'https://camo.githubusercontent.com/[^"]*' | sort -u \
+            | xargs -r -n1 curl -s -o /dev/null -X PURGE
