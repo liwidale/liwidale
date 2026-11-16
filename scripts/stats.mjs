@@ -189,18 +189,26 @@ async function style(used) {
 const GLOW = `<filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
 
 // Pure black card, 1 px hairline. Structure comes from space and type, not fills.
+const GAP = 12;
+const PAIRS = [["commits.svg", "languages.svg"], ["rhythm.svg", "activity.svg"], ...[0, 2, 4].map((i) => [`repos/${i + 1}.svg`, `repos/${i + 2}.svg`])];
+const pairSide = (name) => {
+  if (name.startsWith("contact/")) return CONTACTS.findIndex(([label]) => name === `contact/${label.toLowerCase()}.svg`) % 2 ? "right" : "left";
+  const pair = PAIRS.find((p) => p.includes(name));
+  return pair ? (pair[0] === name ? "left" : "right") : null;
+};
+
 async function svg(name, w, h, label, draw, { rx = 16 } = {}) {
   const k = canvas();
   const body = draw(k);
   const out = join(root, "assets", name);
   mkdirSync(dirname(out), { recursive: true });
-  // Transparent side margin of 1% of the width: a half-width card (50%) and a full-width banner (100%)
-  // then share the same outer inset, and two cards placed side by side get the same gap between them.
-  const m = w * 0.01, ow = +(w + 2 * m).toFixed(2);
+  // Cards shown in pairs (50% + 50%) get a transparent strip on their inner side: the outer edges stay
+  // flush with the full-width banners and the two strips form the gap between the cards.
+  const side = pairSide(name), m = side ? GAP / 2 : 0, ow = w + m;
   writeFileSync(out, `<svg xmlns="http://www.w3.org/2000/svg" width="${ow}" height="${h}" viewBox="0 0 ${ow} ${h}" role="img" aria-label="${esc(label)}">
 <title>${esc(label)}</title>
 ${await style(k.used)}
-<g transform="translate(${m} 0)">
+<g transform="translate(${side === "right" ? m : 0} 0)">
 <defs><clipPath id="clip"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>${GLOW}</defs>
 <rect width="${w}" height="${h}" rx="${rx}" fill="${C.canvas}"/>
 ${body}
