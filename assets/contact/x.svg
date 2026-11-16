@@ -5,8 +5,8 @@
 .v{font-family:'Geist Mono', 'Noto Sans JP', ui-monospace, Menlo, Consolas, monospace;font-size:17px;letter-spacing:0.5px;fill:#FFFFFF}
 .t{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:300;fill:#FFFFFF}
 .r{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:400;fill:#8F8F8F}
-.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87854}
-.a{fill:#A87854}
+.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87855}
+.a{fill:#A87855}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{transform:scaleY(0)}}
 @keyframes grow{from{transform:scaleX(0)}}

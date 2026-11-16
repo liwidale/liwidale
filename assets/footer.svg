@@ -5,8 +5,8 @@
 .v{font-family:'Geist Mono', 'Noto Sans JP', ui-monospace, Menlo, Consolas, monospace;font-size:17px;letter-spacing:0.5px;fill:#FFFFFF}
 .t{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:300;fill:#FFFFFF}
 .r{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:400;fill:#8F8F8F}
-.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87854}
-.a{fill:#A87854}
+.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87855}
+.a{fill:#A87855}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{transform:scaleY(0)}}
 @keyframes grow{from{transform:scaleX(0)}}
@@ -24,7 +24,7 @@
   <linearGradient id="cf" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="172.79999999999998" y2="354"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
   <mask id="cm"><rect width="100%" height="360" fill="url(#cf)"/></mask>
   <linearGradient id="sf" gradientUnits="userSpaceOnUse" x1="60" x2="540" y1="0" y2="0"><stop offset="0" stop-color="#000"/><stop offset="0.2" stop-color="#fff"/><stop offset="1" stop-color="#fff"/><stop offset="1" stop-color="#fff"/></linearGradient>
-  <radialGradient id="bl" gradientUnits="userSpaceOnUse" cx="324" cy="127.26" r="297.6"><stop offset="0" stop-color="#A87854" stop-opacity=".2"/><stop offset=".6" stop-color="#A87854" stop-opacity=".06"/><stop offset="1" stop-color="#A87854" stop-opacity="0"/></radialGradient>
+  <radialGradient id="bl" gradientUnits="userSpaceOnUse" cx="324" cy="127.26" r="297.6"><stop offset="0" stop-color="#A87855" stop-opacity=".2"/><stop offset=".6" stop-color="#A87855" stop-opacity=".06"/><stop offset="1" stop-color="#A87855" stop-opacity="0"/></radialGradient>
   <mask id="sm"><rect x="60" y="10" width="480" height="533" fill="url(#sf)"/></mask>
 </defs>
 <g clip-path="url(#clip)">

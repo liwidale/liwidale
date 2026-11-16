@@ -5,8 +5,8 @@
 .v{font-family:'Geist Mono', 'Noto Sans JP', ui-monospace, Menlo, Consolas, monospace;font-size:17px;letter-spacing:0.5px;fill:#FFFFFF}
 .t{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:300;fill:#FFFFFF}
 .r{font-family:'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-weight:400;fill:#8F8F8F}
-.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87854}
-.a{fill:#A87854}
+.m{font-family:'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', sans-serif;font-size:17px;fill:#A87855}
+.a{fill:#A87855}
 @keyframes fade{from{opacity:0}}
 @keyframes rise{from{transform:scaleY(0)}}
 @keyframes grow{from{transform:scaleX(0)}}
@@ -24,7 +24,7 @@
 <text class="l" x="40" y="58">LANGUAGES</text>
 <text class="l" x="560" y="58" text-anchor="end">TYPESCRIPT</text>
 <text class="t" x="35" y="150" font-size="80" letter-spacing="-3">41.3<tspan style="fill:#5C5C5C" font-size="40" dx="6">%</tspan></text>
-<rect class="grow" style="animation-delay:0ms" x="40.00" y="186" width="210.86" height="4" rx="2" fill="#A87854" filter="url(#glow)"/><rect class="grow" style="animation-delay:30ms" x="254.86" y="186" width="127.14" height="4" rx="2" fill="#D9D9D9"/><rect class="grow" style="animation-delay:60ms" x="386.00" y="186" width="49.92" height="4" rx="2" fill="#8F8F8F"/><rect class="grow" style="animation-delay:90ms" x="439.92" y="186" width="41.58" height="4" rx="2" fill="#5C5C5C"/><rect class="grow" style="animation-delay:120ms" x="485.50" y="186" width="24.05" height="4" rx="2" fill="#363636"/><rect class="grow" style="animation-delay:150ms" x="513.54" y="186" width="42.46" height="4" rx="2" fill="#222222"/>
+<rect class="grow" style="animation-delay:0ms" x="40.00" y="186" width="210.86" height="4" rx="2" fill="#A87855" filter="url(#glow)"/><rect class="grow" style="animation-delay:30ms" x="254.86" y="186" width="127.14" height="4" rx="2" fill="#D9D9D9"/><rect class="grow" style="animation-delay:60ms" x="386.00" y="186" width="49.92" height="4" rx="2" fill="#8F8F8F"/><rect class="grow" style="animation-delay:90ms" x="439.92" y="186" width="41.58" height="4" rx="2" fill="#5C5C5C"/><rect class="grow" style="animation-delay:120ms" x="485.50" y="186" width="24.05" height="4" rx="2" fill="#363636"/><rect class="grow" style="animation-delay:150ms" x="513.54" y="186" width="42.46" height="4" rx="2" fill="#222222"/>
 <text class="r" x="40" y="240" font-size="16">Rust</text>
 <text class="l" x="284" y="240" text-anchor="end">25.2</text>
 <text class="r" x="316" y="240" font-size="16">C++</text>

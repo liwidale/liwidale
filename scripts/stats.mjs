@@ -15,7 +15,7 @@ if (!TOKEN) {
 // Liwidale dark tokens; the accent is Holo's hair color (5.5:1 on black).
 const C = {
   canvas: "#000000", text: "#FFFFFF", muted: "#8F8F8F", subtle: "#5C5C5C",
-  border: "#222222", strong: "#363636", divider: "#1A1A1A", accent: "#A87854",
+  border: "#222222", strong: "#363636", divider: "#1A1A1A", accent: "#A87855",
 };
 const LANG_SHADES = [C.accent, "#D9D9D9", "#8F8F8F", "#5C5C5C", C.strong, C.border];
 const SANS = "'Inter', 'Noto Sans JP', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif";
