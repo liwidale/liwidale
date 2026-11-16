@@ -194,13 +194,18 @@ async function svg(name, w, h, label, draw, { rx = 16 } = {}) {
   const body = draw(k);
   const out = join(root, "assets", name);
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">
+  // Transparent side margin of 1% of the width: a half-width card (50%) and a full-width banner (100%)
+  // then share the same outer inset, and two cards placed side by side get the same gap between them.
+  const m = w * 0.01, ow = +(w + 2 * m).toFixed(2);
+  writeFileSync(out, `<svg xmlns="http://www.w3.org/2000/svg" width="${ow}" height="${h}" viewBox="0 0 ${ow} ${h}" role="img" aria-label="${esc(label)}">
 <title>${esc(label)}</title>
 ${await style(k.used)}
+<g transform="translate(${m} 0)">
 <defs><clipPath id="clip"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>${GLOW}</defs>
 <rect width="${w}" height="${h}" rx="${rx}" fill="${C.canvas}"/>
 ${body}
 <rect x=".5" y=".5" width="${w - 1}" height="${h - 1}" rx="${rx - 0.5}" fill="none" stroke="${C.border}"/>
+</g>
 </svg>
 `);
 }
@@ -369,8 +374,10 @@ await svg("footer.svg", 1280, 360, "Every commit is one more iteration.", (k) =>
 
 const readmePath = join(root, "README.md");
 const block = (name, html) => (s) => s.replace(new RegExp(`(<!-- ${name}:start -->)[\\s\\S]*?(<!-- ${name}:end -->)`), `$1\n${html}\n$2`);
-const repoCards = recent.map((r, i) => `<a href="${r.url}"><img width="49%" alt="${esc(`${r.name}: ${r.description ?? ""}`)}" src="assets/repos/${i + 1}.svg"></a>`).join("\n");
-const contactCards = CONTACTS.map(([label, handle, url]) => `<a href="${url}"><img width="49%" alt="${esc(`${label.toLowerCase()} ${handle}`)}" src="assets/contact/${label.toLowerCase()}.svg"></a>`).join("\n");
+// Two linked cards back to back (no whitespace between them), one pair per line.
+const pairs = (cards) => cards.reduce((rows, c, i) => (i % 2 ? (rows[rows.length - 1] += c) : rows.push(c), rows), []).join("\n");
+const repoCards = pairs(recent.map((r, i) => `<a href="${r.url}"><img width="50%" alt="${esc(`${r.name}: ${r.description ?? ""}`)}" src="assets/repos/${i + 1}.svg"></a>`));
+const contactCards = pairs(CONTACTS.map(([label, handle, url]) => `<a href="${url}"><img width="50%" alt="${esc(`${label.toLowerCase()} ${handle}`)}" src="assets/contact/${label.toLowerCase()}.svg"></a>`));
 const readme = [block("projects", repoCards), block("contact", contactCards)].reduce((s, f) => f(s), readFileSync(readmePath, "utf8"));
 writeFileSync(readmePath, readme);
 
