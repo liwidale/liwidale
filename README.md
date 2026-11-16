@@ -1,9 +1,7 @@
 <img width="100%" alt="liwidale, independent developer." src="assets/header.svg">
 
-<img width="49%" alt="Commits in the last 12 months and share of active days." src="assets/commits.svg">
-<img width="49%" alt="Languages across public repositories by size." src="assets/languages.svg">
-<img width="49%" alt="Contributions by day of the week." src="assets/rhythm.svg">
-<img width="49%" alt="Contribution activity over the last 26 weeks with streaks." src="assets/activity.svg">
+<img width="49%" alt="Commits in the last 12 months and share of active days." src="assets/commits.svg"> <img width="49%" alt="Languages across public repositories by size." src="assets/languages.svg">
+<img width="49%" alt="Contributions by day of the week." src="assets/rhythm.svg"> <img width="49%" alt="Contribution activity over the last 26 weeks with streaks." src="assets/activity.svg">
 
 <a href="https://github.com/liwidale?tab=repositories"><img width="100%" alt="Recent repositories" src="assets/projects.svg"></a>
 <!-- projects:start -->
