@@ -369,8 +369,8 @@ await svg("footer.svg", 1280, 360, "Every commit is one more iteration.", (k) =>
 
 const readmePath = join(root, "README.md");
 const block = (name, html) => (s) => s.replace(new RegExp(`(<!-- ${name}:start -->)[\\s\\S]*?(<!-- ${name}:end -->)`), `$1\n${html}\n$2`);
-const repoCards = recent.map((r, i) => `<a href="${r.url}"><img width="49.6%" alt="${esc(`${r.name}: ${r.description ?? ""}`)}" src="assets/repos/${i + 1}.svg"></a>`).join("\n");
-const contactCards = CONTACTS.map(([label, handle, url]) => `<a href="${url}"><img width="49.6%" alt="${esc(`${label.toLowerCase()} ${handle}`)}" src="assets/contact/${label.toLowerCase()}.svg"></a>`).join("\n");
+const repoCards = recent.map((r, i) => `<a href="${r.url}"><img width="49%" alt="${esc(`${r.name}: ${r.description ?? ""}`)}" src="assets/repos/${i + 1}.svg"></a>`).join("\n");
+const contactCards = CONTACTS.map(([label, handle, url]) => `<a href="${url}"><img width="49%" alt="${esc(`${label.toLowerCase()} ${handle}`)}" src="assets/contact/${label.toLowerCase()}.svg"></a>`).join("\n");
 const readme = [block("projects", repoCards), block("contact", contactCards)].reduce((s, f) => f(s), readFileSync(readmePath, "utf8"));
 writeFileSync(readmePath, readme);
 
