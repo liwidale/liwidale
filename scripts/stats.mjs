@@ -349,7 +349,8 @@ await svg("projects.svg", 1280, 220, "Recent repositories", (k) => `${cutout("ho
 <text class="l" x="112" y="150">${k.mono(`${recent.length} OF ${repos.length}  ·  SORTED BY LAST PUSH  ·  REFRESHED DAILY`)}</text>`);
 
 // Facts row in 13 px Geist Mono: advance 0.6 em + 1.5 px tracking per character. Pieces are separated by a
-// wave dash; a piece may start with an icon (24-unit path drawn at 12 px).
+// wave dash; a piece may start with an icon (24-unit path drawn at 15 px, its corners rounded by a stroke
+// of the same color, centered on the caps of the text).
 const STAR = "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z";
 const ADV = 13 * 0.6 + 1.5;
 function factsRow(k, parts, x, y) {
@@ -361,8 +362,8 @@ function factsRow(k, parts, x, y) {
       cx += 12 + 14.5 + 12;
     }
     if (part.icon) {
-      out += `<path transform="translate(${cx.toFixed(1)} ${y - 11}) scale(.5)" d="${part.icon}" fill="${C.muted}"/>`;
-      cx += 12 + 6;
+      out += `<path transform="translate(${cx.toFixed(1)} ${(y - 12.4).toFixed(1)}) scale(.625)" d="${part.icon}" fill="${C.muted}" stroke="${C.muted}" stroke-width="2.6" stroke-linejoin="round"/>`;
+      cx += 15 + 7;
     }
     out += `<text class="l" x="${cx.toFixed(1)}" y="${y}" style="font-size:13px">${k.mono(part.text)}</text>`;
     cx += part.text.length * ADV;

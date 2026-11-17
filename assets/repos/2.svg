@@ -27,6 +27,6 @@
 <text class="t" x="38" y="104" font-size="34" letter-spacing="-1">notyet</text>
 <text class="r" x="40" y="136" font-size="15">Native macOS menu bar app that keeps your Mac awake,</text>
 <text class="r" x="40" y="158" font-size="15">even with the lid closed, while AI coding agents work …</text>
-<text class="l" x="40.0" y="194" style="font-size:13px">1 COMMIT</text><text class="l" x="126.4" y="194" style="font-size:13px">〜</text><path transform="translate(152.9 183) scale(.5)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" fill="#8F8F8F"/><text class="l" x="170.9" y="194" style="font-size:13px">2</text><text class="l" x="192.2" y="194" style="font-size:13px">〜</text><text class="l" x="218.7" y="194" style="font-size:13px">UPDATED 12 OCT 2026</text>
+<text class="l" x="40.0" y="194" style="font-size:13px">1 COMMIT</text><text class="l" x="126.4" y="194" style="font-size:13px">〜</text><path transform="translate(152.9 181.6) scale(.625)" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" fill="#8F8F8F" stroke="#8F8F8F" stroke-width="2.6" stroke-linejoin="round"/><text class="l" x="174.9" y="194" style="font-size:13px">2</text><text class="l" x="196.2" y="194" style="font-size:13px">〜</text><text class="l" x="222.7" y="194" style="font-size:13px">UPDATED 12 OCT 2026</text>
 </g>
 </svg>
