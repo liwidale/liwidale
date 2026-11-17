@@ -102,7 +102,8 @@ const langs = [...langBytes].sort((a, b) => b[1] - a[1]).map(([name, size]) => (
 const topLangs = langs.slice(0, 5);
 const otherPct = langs.slice(5).reduce((a, l) => a + l.pct, 0);
 if (otherPct > 0.05) topLangs.push({ name: "Other", pct: otherPct });
-const recent = repos.filter((r) => !r.isArchived).slice(0, RECENT);
+// Most-starred first; ties go to the most recently pushed (the list is already in push order, and the sort is stable).
+const recent = repos.filter((r) => !r.isArchived).sort((a, b) => b.stargazerCount - a.stargazerCount).slice(0, RECENT);
 
 // ---------- svg helpers ----------
 
@@ -343,10 +344,10 @@ const strip = (file, index, name, note) => svg(file, 1280, 120, name, (k) => `
 <text class="t" x="110" y="76" font-size="40" letter-spacing="-1.2">${k.light(name)}</text>
 <text class="l" x="1224" y="70" text-anchor="end">${k.mono(note)}</text>`);
 
-await svg("projects.svg", 1280, 220, "Recent repositories", (k) => `${cutout("holo-repos.webp", 900, 0, 330, 330, 220, [0.55, 0.32])}
+await svg("projects.svg", 1280, 220, "Top repositories", (k) => `${cutout("holo-repos.webp", 900, 0, 330, 330, 220, [0.55, 0.32])}
 <text class="l" x="56" y="78"><tspan class="a">${k.mono("01")}</tspan></text>
-<text class="t" x="110" y="86" font-size="48" letter-spacing="-1.5">${k.light("Recent repositories")}</text>
-<text class="l" x="112" y="150">${k.mono(`${recent.length} OF ${repos.length}  ·  SORTED BY LAST PUSH  ·  REFRESHED DAILY`)}</text>`);
+<text class="t" x="110" y="86" font-size="48" letter-spacing="-1.5">${k.light("Top repositories")}</text>
+<text class="l" x="112" y="150">${k.mono(`${recent.length} OF ${repos.length}  ·  SORTED BY STARS  ·  REFRESHED DAILY`)}</text>`);
 
 // Facts row in 13 px Geist Mono: advance 0.6 em + 1.5 px tracking per character. Pieces are separated by a
 // wave dash; a piece may start with an icon (24-unit path drawn at 15 px, its corners rounded by a stroke
