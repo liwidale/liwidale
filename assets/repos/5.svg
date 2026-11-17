@@ -20,6 +20,7 @@
 <g transform="translate(0 0)">
 <defs><clipPath id="clip"><rect width="600" height="220" rx="16"/></clipPath><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <rect width="600" height="220" rx="16" fill="#000000"/>
+<rect x=".5" y=".5" width="599" height="219" rx="15.5" fill="none" stroke="#222222"/>
 
 <text class="l" x="40" y="56">05</text>
 <text class="l" x="560" y="56" text-anchor="end"><tspan class="a">●</tspan><tspan dx="8">POWERSHELL</tspan></text>
@@ -27,6 +28,5 @@
 <text class="r" x="40" y="136" font-size="15">Claude Code on a USB drive: one memory and one set of</text>
 <text class="r" x="40" y="158" font-size="15">conversations on every computer you plug it into, …</text>
 <text class="l" x="40" y="194" style="font-size:13px">2 COMMITS   ·   ★ 2   ·   UPDATED 7 OCT 2026</text>
-<rect x=".5" y=".5" width="599" height="219" rx="15.5" fill="none" stroke="#222222"/>
 </g>
 </svg>

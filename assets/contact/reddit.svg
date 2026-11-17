@@ -20,10 +20,10 @@
 <g transform="translate(6 0)">
 <defs><clipPath id="clip"><rect width="600" height="96" rx="16"/></clipPath><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <rect width="600" height="96" rx="16" fill="#000000"/>
+<rect x=".5" y=".5" width="599" height="95" rx="15.5" fill="none" stroke="#222222"/>
 
 <text class="l" x="40" y="56">REDDIT</text>
 <text class="t" x="200" y="57" font-size="22" letter-spacing="-0.3">u/liwidale</text>
 <text class="r" x="560" y="57" font-size="20" text-anchor="end">↗</text>
-<rect x=".5" y=".5" width="599" height="95" rx="15.5" fill="none" stroke="#222222"/>
 </g>
 </svg>

@@ -197,7 +197,7 @@ const pairSide = (name) => {
   return pair ? (pair[0] === name ? "left" : "right") : null;
 };
 
-async function svg(name, w, h, label, draw, { rx = 16 } = {}) {
+async function svg(name, w, h, label, draw, { rx = 16, over = 0 } = {}) {
   const k = canvas();
   const body = draw(k);
   const out = join(root, "assets", name);
@@ -205,34 +205,34 @@ async function svg(name, w, h, label, draw, { rx = 16 } = {}) {
   // Cards shown in pairs (50% + 50%) get a transparent strip on their inner side: the outer edges stay
   // flush with the full-width banners and the two strips form the gap between the cards.
   const side = pairSide(name), m = side ? GAP / 2 : 0, ow = w + m;
-  writeFileSync(out, `<svg xmlns="http://www.w3.org/2000/svg" width="${ow}" height="${h}" viewBox="0 0 ${ow} ${h}" role="img" aria-label="${esc(label)}">
+  writeFileSync(out, `<svg xmlns="http://www.w3.org/2000/svg" width="${ow}" height="${h + over}" viewBox="0 0 ${ow} ${h + over}" role="img" aria-label="${esc(label)}">
 <title>${esc(label)}</title>
 ${await style(k.used)}
-<g transform="translate(${side === "right" ? m : 0} 0)">
+<g transform="translate(${side === "right" ? m : 0} ${over})">
 <defs><clipPath id="clip"><rect width="${w}" height="${h}" rx="${rx}"/></clipPath>${GLOW}</defs>
 <rect width="${w}" height="${h}" rx="${rx}" fill="${C.canvas}"/>
-${body}
 <rect x=".5" y=".5" width="${w - 1}" height="${h - 1}" rx="${rx - 0.5}" fill="none" stroke="${C.border}"/>
+${body}
 </g>
 </svg>
 `);
 }
 
-// Transparent cut-out standing on the black: clipped by the card, fading out toward the card's bottom
-// edge, with one thin accent ring behind the head (cx, cy, r in the image's own 0..1 space).
-function cutout(file, x, y, w, h, cardH, head, sides = [0, 0]) {
+// Transparent cut-out standing on the black: clipped by the card (and by the band above it when `over`
+// is set, so the ears break out of the frame), fading out toward the card's bottom edge, with a soft
+// accent backlight behind the head (hx, hy in the image's own 0..1 space).
+function cutout(file, x, y, w, h, cardH, head, sides = [0, 0], over = 0) {
   const [hx, hy] = head;
   return `<defs>
   <linearGradient id="cf" gradientUnits="userSpaceOnUse" x1="0" x2="0" y1="${cardH * 0.48}" y2="${cardH - 6}"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
-  <mask id="cm"><rect width="100%" height="${cardH}" fill="url(#cf)"/></mask>
+  <mask id="cm"><rect y="${-over}" width="100%" height="${cardH + over}" fill="url(#cf)"/></mask>
+  <clipPath id="cc"><rect width="100%" height="${cardH}" rx="16"/>${over ? `<rect x="${x}" y="${-over}" width="${w}" height="${over + 16}"/>` : ""}</clipPath>
   <linearGradient id="sf" gradientUnits="userSpaceOnUse" x1="${x}" x2="${x + w}" y1="0" y2="0"><stop offset="0" stop-color="${sides[0] ? "#000" : "#fff"}"/><stop offset="${sides[0]}" stop-color="#fff"/><stop offset="${1 - sides[1]}" stop-color="#fff"/><stop offset="1" stop-color="${sides[1] ? "#000" : "#fff"}"/></linearGradient>
   <radialGradient id="bl" gradientUnits="userSpaceOnUse" cx="${x + hx * w}" cy="${y + hy * h}" r="${w * 0.62}"><stop offset="0" stop-color="${C.accent}" stop-opacity=".2"/><stop offset=".6" stop-color="${C.accent}" stop-opacity=".06"/><stop offset="1" stop-color="${C.accent}" stop-opacity="0"/></radialGradient>
   <mask id="sm"><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#sf)"/></mask>
 </defs>
-<g clip-path="url(#clip)">
-  <rect width="100%" height="${cardH}" fill="url(#bl)"/>
-  <g mask="url(#cm)"><g mask="url(#sm)"><image class="in" href="${artData(file)}" x="${x}" y="${y}" width="${w}" height="${h}"/></g></g>
-</g>`;
+<g clip-path="url(#clip)"><rect width="100%" height="${cardH}" fill="url(#bl)"/></g>
+<g clip-path="url(#cc)"><g mask="url(#cm)"><g mask="url(#sm)"><image class="in" href="${artData(file)}" x="${x}" y="${y}" width="${w}" height="${h}"/></g></g></g>`;
 }
 
 const W = 600, H = 320, P = 40;
@@ -245,14 +245,14 @@ const title = (d) => WEEK[d][0] + WEEK[d].slice(1).toLowerCase();
 
 await svg("header.svg", 1280, 440, `${profile.name || USER}. ${profile.bio ?? ""}`, (k) => {
   const meta = [profile.location, `SINCE ${created.getUTCFullYear()}`, `${profile.repositories.totalCount} REPOS`].filter(Boolean).map((s) => s.toUpperCase()).join("   ·   ");
-  return `${cutout("holo-header.webp", 724, 6, 544, 600, 440, [0.55, 0.32])}
+  return `${cutout("holo-header.webp", 700, -38, 580, 640, 440, [0.55, 0.32], [0, 0], 40)}
 <text x="64" y="96" style="font-size:18px"><tspan class="m" style="font-size:inherit">${k.mark()}</tspan><tspan class="l" dx="10" style="font-size:inherit">${k.mono("INDEPENDENT DEVELOPER")}</tspan></text>
 <text class="t" x="58" y="236" font-size="128" letter-spacing="-5">${k.light(USER)}</text>
 ${profile.bio ? `<text class="r" x="64" y="286" font-size="22" letter-spacing="-0.1">${k.regular(profile.bio)}</text>` : ""}
 <line x1="64" x2="648" y1="346" y2="346" stroke="${C.divider}"/>
 <text class="l" x="64" y="384" style="font-size:16px">${k.mono(meta)}</text>
 <text class="l" x="648" y="384" text-anchor="end" style="font-size:16px"><tspan class="a">●</tspan><tspan dx="8">${k.mono(updated)}</tspan></text>`;
-});
+}, { over: 40 });
 
 // ---------- stats ----------
 
@@ -371,12 +371,12 @@ for (const [label, handle] of CONTACTS) {
 <text class="r" x="${W - P}" y="57" font-size="20" text-anchor="end">${k.regular("↗")}</text>`);
 }
 
-await svg("footer.svg", 1280, 360, "Every commit is one more iteration.", (k) => `${cutout("holo-footer.webp", 60, 10, 480, 533, 360, [0.55, 0.22], [0.2, 0])}
+await svg("footer.svg", 1280, 360, "Every commit is one more iteration.", (k) => `${cutout("holo-footer.webp", 0, -40, 500, 556, 360, [0.45, 0.22], [0, 0], 48)}
 <text x="600" y="96" style="font-size:18px"><tspan class="m" style="font-size:inherit">${k.mark()}</tspan><tspan class="l" dx="10" style="font-size:inherit">${k.mono("ONE MORE ITERATION")}</tspan></text>
 <text class="t" x="596" y="180" font-size="52" letter-spacing="-1.8">${k.light("Every commit is")}</text>
 <text class="t" x="596" y="240" font-size="52" letter-spacing="-1.8" style="fill:${C.subtle}">${k.light("one more iteration.")}</text>
 <line x1="600" x2="1216" y1="290" y2="290" stroke="${C.divider}"/>
-<text class="l" x="600" y="320" style="font-size:13px">${k.mono("ART · HOLO, SPICE AND WOLF · FAN ART BY LIKUNEA")}</text>`);
+<text class="l" x="600" y="320" style="font-size:13px">${k.mono("ART · HOLO, SPICE AND WOLF · FAN ART BY LIKUNEA")}</text>`, { over: 48 });
 
 // ---------- README ----------
 

@@ -20,6 +20,7 @@
 <g transform="translate(6 0)">
 <defs><clipPath id="clip"><rect width="600" height="320" rx="16"/></clipPath><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <rect width="600" height="320" rx="16" fill="#000000"/>
+<rect x=".5" y=".5" width="599" height="319" rx="15.5" fill="none" stroke="#222222"/>
 
 <text class="l" x="40" y="58">LANGUAGES</text>
 <text class="l" x="560" y="58" text-anchor="end">TYPESCRIPT</text>
@@ -33,6 +34,5 @@
 <text class="l" x="284" y="276" text-anchor="end">8.8</text>
 <text class="r" x="316" y="276" font-size="16">Kotlin</text>
 <text class="l" x="560" y="276" text-anchor="end">5.4</text>
-<rect x=".5" y=".5" width="599" height="319" rx="15.5" fill="none" stroke="#222222"/>
 </g>
 </svg>

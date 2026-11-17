@@ -20,6 +20,7 @@
 <g transform="translate(0 0)">
 <defs><clipPath id="clip"><rect width="600" height="320" rx="16"/></clipPath><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <rect width="600" height="320" rx="16" fill="#000000"/>
+<rect x=".5" y=".5" width="599" height="319" rx="15.5" fill="none" stroke="#222222"/>
 
 <text class="l" x="40" y="58">WEEKLY RHYTHM</text>
 <rect class="rise" style="animation-delay:0ms" x="40" y="136.83333333333331" width="8" height="99.16666666666667" rx="4" fill="#363636"/>
@@ -41,6 +42,5 @@
 <text class="l" x="360" y="204">QUIETEST</text><text class="t" x="560" y="204" font-size="26" text-anchor="end" letter-spacing="-0.5">Thu</text>
 <line x1="360" x2="560" y1="228" y2="228" stroke="#1A1A1A"/>
 <text class="l" x="360" y="268">WEEKDAYS</text><text class="t" x="560" y="268" font-size="26" text-anchor="end" letter-spacing="-0.5">45%</text>
-<rect x=".5" y=".5" width="599" height="319" rx="15.5" fill="none" stroke="#222222"/>
 </g>
 </svg>

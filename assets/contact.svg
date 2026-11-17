@@ -20,10 +20,10 @@
 <g transform="translate(0 0)">
 <defs><clipPath id="clip"><rect width="1280" height="120" rx="16"/></clipPath><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.5" result="b"/><feComponentTransfer in="b" result="s"><feFuncA type="linear" slope=".4"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <rect width="1280" height="120" rx="16" fill="#000000"/>
+<rect x=".5" y=".5" width="1279" height="119" rx="15.5" fill="none" stroke="#222222"/>
 
 <text class="l" x="56" y="70"><tspan class="a">02</tspan></text>
 <text class="t" x="110" y="76" font-size="40" letter-spacing="-1.2">Contact</text>
 <text class="l" x="1224" y="70" text-anchor="end">6 CHANNELS</text>
-<rect x=".5" y=".5" width="1279" height="119" rx="15.5" fill="none" stroke="#222222"/>
 </g>
 </svg>
