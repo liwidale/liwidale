@@ -27,7 +27,7 @@
 <text class="l" x="44" y="276" text-anchor="middle">M</text>
 <rect class="rise" style="animation-delay:30ms" x="80" y="166" width="8" height="70" rx="4" fill="#363636"/>
 <text class="l" x="84" y="276" text-anchor="middle">T</text>
-<rect class="rise" style="animation-delay:60ms" x="120" y="187" width="8" height="49" rx="4" fill="#363636"/>
+<rect class="rise" style="animation-delay:60ms" x="120" y="180" width="8" height="56" rx="4" fill="#363636"/>
 <text class="l" x="124" y="276" text-anchor="middle">W</text>
 <rect class="rise" style="animation-delay:90ms" x="160" y="229" width="8" height="7" rx="4" fill="#363636"/>
 <text class="l" x="164" y="276" text-anchor="middle">T</text>
